@@ -1,0 +1,72 @@
+{% extends 'includes/base.html' %}
+
+{% block title %} Carregar Informações {% endblock %}
+
+{% block body %}
+    <div class="container ">
+        <form method="post" action="{% url 'megasolucoes:show' %}" id="carregaDados">
+            {% csrf_token %}
+
+            <div class="form-row"><!-- Container com Formula Max/Min Z-->
+                <br><br><br>
+                {% if opcao == True %}
+                    <div class="col" style="padding-top: 1em"><h3>Max Z =</h3></div>
+                {% else %}
+                    <div class="col" style="padding-top: 1em"><h3>Min Z =</h3></div>
+                {% endif %}
+
+                {%  for var in z.keys %}
+                    <input type="text" name="z{{var}}" id="id_z{{ var }}" class=" col " style="border:0px; padding: 0px;" placeholder="{{ var }}" aria-label="Username" aria-describedby="basic-addon1">
+                {% endfor %}
+            </div>
+
+
+            <div class="form-row"> <br></div> <!-- Container da Tabela-->
+            <div class="form-row">
+                <table class="table ">
+                    <thead class="thead"><!-- Header da tabela -->
+                        <tr>
+                        {% for var in context.keys %}<!-- For Header da tabela -->
+                            <th scope="col" style="padding-left:0px; padding-right:0 ">
+                                    <input type="text" class="form-control" name="header{{ var }}" id="id_header{{ var }}" style=";border:0px; padding: 0px;" placeholder="{{ var }}" aria-label="Username" aria-describedby="basic-addon1">
+                            </th>
+                        {% endfor %}
+                        </tr>
+                    </thead><!-- Fim Header da tabela -->
+                    <tbody>
+
+                    <!-- For das Linhas -->
+                    {% for var in linhas.items %}<!-- For Linha Z -->
+                    <tr>
+                        {% for item in var.1.items %}
+                            {% if item.0 == "base" %}
+                                <th scope="row col">{{ item.1 }}</th>
+                            {% else %}
+                                 <td>
+                                    <input type="text"  name="{{ var.0 }}{{ item.0 }}" id="id_{{ var.0 }}{{ item.0 }}"    class="form-control col" style=";border:0px; padding: 0px;" placeholder="{{ item.1 }}" aria-label="Username" aria-describedby="basic-addon1">
+                                 </td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    <!-- FIM For das Linhas -->
+
+                    <tr>
+                        <th scope="row col"><h5>Z</h5></th>
+                        {% for var in context.keys %}<!-- For Linha Z -->
+                            {% if var != "base" %}
+                            <td>
+                                <input type="text" name="linhaZ{{ var }}"  id="id_linhaZ{{ var }}"      class="form-control col" style=";border:0px; padding: 0px;" placeholder="{{ var }}" aria-label="Username" aria-describedby="basic-addon1">
+                            </td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <button class="btn btn-primary" type="submit">Calcular</button>
+        </form>
+    </div>
+{% endblock %}

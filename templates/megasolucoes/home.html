@@ -1,13 +1,59 @@
-{% extends 'includes/layout.html' %}
+{% extends 'includes/base.html' %}
+{% load widget_tweaks %}
 
 {% block body %}
+    <div class="container">
+        <br>
+        <form action="{% url 'megasolucoes:info' %}" method="post" id="carregaVariaveis">
+            {% csrf_token %}
 
 
-   <div class="container">
-    <h1 class="display-1">Display 1</h1>
-    <h1 class="display-2">Display 2</h1>
-    <h1 class="display-3">Display 3</h1>
-    <h1 class="display-4">Display 4</h1>
-   </div>
+            {{ form.optSimplex.1 }}
+            {{ form.optSimplex.0 }}
+{#            <div class="btn-group" data-toggle="buttons" id="optSimplexMax">#}
+{#                <label class="btn btn-secondary active" onclick="Max()">#}
+{#                    Maximizar#}
+{#                </label>#}
+{##}
+{#                <label class="btn btn-secondary" id="optSimplexMax" onclick="Max()">#}
+{#                    Minimizar#}
+{#                </label>#}
+{#            </div>#}
+            <div class="form-row">
+                <div class="col-3">
+                    {{ form.nIteracoes.label_tag }}
+                </div>
+                <div class="col-9">
+                    {{ form.nIteracoes|add_class:'col-9'| attr:'type:number' |attr:'value:0'|attr:'minValue:1' }}
+                </div>
+            </div>
 
+            <div class="form-row">
+                <div class="col-3">
+                    {{ form.nVariaveis.label_tag }}
+                </div>
+                <div class="col-9">
+                    {{ form.nVariaveis |add_class:'col-9'|attr:'value:0'|attr:'minValue:'}}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-3">
+                    {{ form.nRegras.label_tag }}
+                </div>
+                <div class="col-9">
+                    {{ form.nRegras |add_class:'col-9'|attr:'value:0'|attr:'minValue:'}}
+                </div>
+            </div>
+
+            {% if field.errors %}
+                {{ errors }}
+            {% endif %}
+
+            <br>
+
+            <button class="btn btn-primary" type="submit">Iniciar Simplex</button>
+
+        </form>
+    </div>
 {% endblock %}
